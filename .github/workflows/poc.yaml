@@ -9,5 +9,5 @@ permissions: write-all
 
 jobs:
   poc-client:
-    uses: .github/workflows/reusable.yaml
+    uses: ./.github/workflows/reusable.yaml
     secrets: inherit
