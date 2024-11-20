@@ -20,7 +20,7 @@ jobs:
           github-token: ${{ github.token }}
           script: |
             console.log('input-branch: ${{ inputs.branch }}');
-            let branch = github.rest.repos.getBranch({
+            let branch = await github.rest.repos.getBranch({
               owner: context.repo.owner,
               repo: context.repo.repo,
               branch: '${{ inputs.branch }}'
