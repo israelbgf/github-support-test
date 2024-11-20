@@ -1,22 +1,32 @@
-name: POC Pipeline
+name: POC Reusable Workflow
 
 on:
-  pull_request:
-    branches:
-      - master
+  workflow_call:
+    inputs:
+      branch:
+        required: true
+        type: string
+
+permissions: write-all
 
 jobs:
   poc:
     name: POC
     runs-on: ubuntu-latest
     steps:
-      - name: PR check
+      - name: PR check!
         uses: actions/github-script@v7
         with:
           github-token: ${{ github.token }}
           script: |
-            let headSha = '${{ github.event.pull_request.head.sha }}'
-            let mergeCommitSha = '${{ github.sha }}'
+            console.log('input-branch: ${{ inputs.branch }}');
+            let branch = github.rest.repos.getBranch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              branch: '${{ inputs.branch }}'
+            })
+            console.log(branch)
+            let headSha = branch.data.commit.sha
             
             console.log(await github.rest.checks.create({
               name: 'my-check',
